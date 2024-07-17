@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Log</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <h1>Notification Log</h1>
+    <table id="logTable">
+        <thead>
+            <tr>
+                <th>App</th>
+                <th>Title</th>
+                <th>Text</th>
+                <th>Summary Text</th>
+                <th>Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        const apiUrl = 'https://mocklog-76c05-default-rtdb.asia-southeast1.firebasedatabase.app/log.json';
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const logTableBody = document.getElementById('logTable').querySelector('tbody');
+                const sortedKeys = Object.keys(data).reverse();
+
+                sortedKeys.forEach(key => {
+                    const log = data[key];
+                    const notification = log.notification;
+                    const row = document.createElement('tr');
+                    
+                    const appCell = document.createElement('td');
+                    appCell.textContent = log.app;
+                    row.appendChild(appCell);
+
+                    const titleCell = document.createElement('td');
+                    titleCell.textContent = notification.title;
+                    row.appendChild(titleCell);
+
+                    const textCell = document.createElement('td');
+                    textCell.textContent = notification.text;
+                    row.appendChild(textCell);
+
+                    const summaryTextCell = document.createElement('td');
+                    summaryTextCell.textContent = notification.summaryText;
+                    row.appendChild(summaryTextCell);
+
+                    const timeCell = document.createElement('td');
+                    const date = new Date(parseInt(notification.time));
+                    timeCell.textContent = date.toLocaleString();
+                    row.appendChild(timeCell);
+
+                    const actionsCell = document.createElement('td');
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.onclick = () => {
+                        row.remove();
+                        // Handle deletion in backend if necessary
+                    };
+                    actionsCell.appendChild(deleteButton);
+                    row.appendChild(actionsCell);
+
+                    logTableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
