@@ -39,7 +39,6 @@
                 <th>Text</th>
                 <th>Summary Text</th>
                 <th>Time</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -81,16 +80,6 @@
                     const date = new Date(parseInt(notification.time));
                     timeCell.textContent = date.toLocaleString();
                     row.appendChild(timeCell);
-
-                    const actionsCell = document.createElement('td');
-                    const deleteButton = document.createElement('button');
-                    deleteButton.textContent = 'Delete';
-                    deleteButton.onclick = () => {
-                        row.remove();
-                        // Handle deletion in backend if necessary
-                    };
-                    actionsCell.appendChild(deleteButton);
-                    row.appendChild(actionsCell);
 
                     logTableBody.appendChild(row);
                 });
