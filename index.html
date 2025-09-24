@@ -203,6 +203,16 @@
           font-size: 1.1em;
           margin-bottom: 10px;
         }
+
+        .fab-delete {
+          padding: 16px 22px;
+          font-size: 14px;
+        }
+
+        .fab-delete svg {
+          width: 20px;
+          height: 20px;
+        }
       }
 
       @media screen and (max-width: 360px) {
@@ -304,7 +314,17 @@
             const timeValue =
               notification.time != null ? Number(notification.time) : undefined;
             const date = timeValue ? new Date(timeValue) : null;
-            const timeText = date ? date.toLocaleString() : "-";
+            const timeText = date
+              ? date.toLocaleString(undefined, {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                  hour: "numeric",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: true,
+                })
+              : "-";
             const appText = log.app || "-";
             timeAppCell.innerHTML = `<div class="time">${timeText}</div><div class="app">${appText}</div>`;
             row.appendChild(timeAppCell);
